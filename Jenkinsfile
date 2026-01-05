@@ -1,22 +1,22 @@
 @Library('jenkins-shared-library') _
 
-// Parameters must be declared before any pipeline logic executes
 properties([
   parameters([
-    string(name: 'appVersion',   description: 'Enter Application version'),
-    choice(name: 'deploy_to', choices: ['dev', 'qa', 'prod'], description: 'Target environment')
+    string(name: 'appVersion', defaultValue: ''),
+    string(name: 'deploy_to', defaultValue: 'dev')
   ])
 ])
 
-// Build configMap from params (with safe defaults)
-def configMap = [
-  project    : "roboshop",
-  component  : "frontend",
-  deploy_to: (params.deploy_to       ?: 'dev'),
-  appVersion : (params.appVersion)
+def mymap = [
+    project: "roboshop",
+    component: "frontend",
+    acc_id: "406682759639",
+    region: "us-east-1",
+    appVersion: (params.appVersion),
+    deploy_to: (params.deploy_to)
 ]
 
 echo "Going to execute Jenkins shared library"
-echo "ConfigMap: ${configMap}"
+echo "ConfigMap: ${mymap}"
 
-EKSDeploy(configMap)
+EKSDeploy(mymap)
